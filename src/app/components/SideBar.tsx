@@ -1,72 +1,47 @@
 import { FC, useState } from "react";
 import { Button } from "./ui/button";
+
 interface SideBarProps {
   onNavigate: (page: string) => void;
 }
-const Sidebar: FC<SideBarProps> = ({ onNavigate }) => {
-  const [currentPage, setCurrentPage] = useState('dashboard');
 
-  const onNavigateChange = (currentPage: string) => {
-    onNavigate(currentPage);
-    setCurrentPage(currentPage);
-  }
+const menuItems = [
+  { key: "dashboard", label: "Tableau de bord" },
+  { key: "births", label: "Actes de naissance" },
+  { key: "cin", label: "Vérification CIN" },
+  { key: "residence", label: "Certificats de résidence" },
+  { key: "print", label: "File d'impression" },
+  { key: "employees", label: "Employés" },
+  { key: "history", label: "Historique" },
+];
+
+const Sidebar: FC<SideBarProps> = ({ onNavigate }) => {
+  const [currentPage, setCurrentPage] = useState("dashboard");
+
+  const onNavigateChange = (page: string) => {
+    setCurrentPage(page);
+    onNavigate(page);
+  };
+
   return (
-    <nav className="bg-white border-b">
+    <nav className="bg-white border-b h-full border-r-2 border-r-black w-54">
       <div className="px-6 py-3">
-        <div className="flex gap-2 overflow-x-auto">
-          <Button
-            variant={currentPage === 'dashboard' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => onNavigateChange('dashboard')}
-          >
-            Tableau de bord
-          </Button>
-          <Button
-            variant={currentPage === 'births' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => onNavigateChange('births')}
-          >
-            Actes de naissance
-          </Button>
-          <Button
-            variant={currentPage === 'cin' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => onNavigateChange('cin')}
-          >
-            Vérification CIN
-          </Button>
-          <Button
-            variant={currentPage === 'residence' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => onNavigateChange('residence')}
-          >
-            Certificats de résidence
-          </Button>
-          <Button
-            variant={currentPage === 'print' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => onNavigateChange('print')}
-          >
-            File d'impression
-          </Button>
-          <Button
-            variant={currentPage === 'employees' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => onNavigateChange('employees')}
-          >
-            Employés
-          </Button>
-          <Button
-            variant={currentPage === 'history' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => onNavigateChange('history')}
-          >
-            Historique
-          </Button>
+        <div className="flex flex-col gap-2">
+          {menuItems.map((menuItem) => (
+            <Button
+              key={menuItem.key}
+              variant={currentPage === menuItem.key ? "default" : "ghost"}
+              size="sm"
+              onClick={() => onNavigateChange(menuItem.key)}
+              className="justify-normal"
+            >
+              {menuItem.label}
+            </Button>
+          ))}
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
 export default Sidebar;

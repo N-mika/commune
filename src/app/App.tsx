@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Menu, LogOut, Building2 } from 'lucide-react';
 import { Login } from './components/Login';
 import { Dashboard } from './components/Dashboard';
 import { BirthCertificates } from './components/BirthCertificates';
@@ -8,15 +7,16 @@ import { ResidenceCertificates } from './components/ResidenceCertificates';
 import { PrintQueue } from './components/PrintQueue';
 import { EmployeeManagement } from './components/EmployeeManagement';
 import { AuditHistory } from './components/AuditHistory';
-import { Button } from './components/ui/button';
 import Sidebar from './components/SideBar';
+import Header from './components/Header';
+import { User } from '../data/typeData';
 
-export default function App() {
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState('dashboard');
+const App = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>({ name: 'Admin User', role: 'admin', email: 'michaelnadrasana@gmail.com', id: 1 });
+  const [currentPage, setCurrentPage] = useState<string>('dashboard');
   const [printQueue, setPrintQueue] = useState<any[]>([]);
 
-  const handleLogin = (employee: any) => {
+  const handleLogin = (employee: User) => {
     setCurrentUser(employee);
     setCurrentPage('dashboard');
   };
@@ -58,34 +58,18 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex flex-col h-screen">
       {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-10">
-        <div className="flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <Building2 className="w-8 h-8 text-blue-600" />
-            <div>
-              <h1 className="font-semibold">Application Interne Commune</h1>
-              <p className="text-sm text-gray-600">District de Madagascar</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium">{currentUser.name}</p>
-              <p className="text-xs text-gray-600">{currentUser.role}</p>
-            </div>
-            <Button variant="outline" size="sm" onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Déconnexion
-            </Button>
-          </div>
-        </div>
-      </header>
-      <Sidebar onNavigate={handleNavigate} />
-      {/* Main Content */}
-      <main className="container mx-auto px-6 py-8">
-        {renderPage()}
-      </main>
+      <Header currentUser={currentUser} handleLogout={handleLogout} />
+      <div className="flex h-full">
+        <Sidebar onNavigate={handleNavigate} />
+        {/* Main Content */}
+        <main className="container px-6 py-8 flex-1 max-h-[85vh] overflow-auto">
+          {renderPage()}
+        </main>
+      </div>
     </div>
   );
 }
+
+export default App;

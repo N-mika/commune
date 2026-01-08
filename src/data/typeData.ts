@@ -15,4 +15,5 @@ export interface BirthCerticat {
   requestDate: string;
   status: string;
   createdAt: string;
+  genre: 'M' | 'F';
 }

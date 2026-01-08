@@ -7,7 +7,7 @@ export const inputFields = [
     required: true,
   },
   { key: "motherName", label: "Nom de la mère", type: "text", required: true },
-  { key: "fokontany", label: "Fokontany", type: "text", required: true },
+  { key: "fokontany", label: "Lieu de naissance", type: "text", required: true },
   {
     key: "dateOfBirth",
     label: "Date de naissance",

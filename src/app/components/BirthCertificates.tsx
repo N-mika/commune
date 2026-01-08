@@ -10,6 +10,7 @@ import AddBirth from './Modal/AddBirth';
 import { newBirthVoid } from '../../data/DataVoid';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux';
+import BirthCertifcatModal from './Modal/BirthCertifcatModal';
 interface BirthCertificatesProps {
   currentUser: User;
   onAddToPrintQueue?: (item: any) => void;
@@ -22,6 +23,8 @@ export function BirthCertificates({ currentUser, onAddToPrintQueue }: BirthCerti
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [birthCertifcat, setBirthCertifcat] = useState<BirthCerticat>(newBirthVoid);
 
   useEffect(() => {
     let filtered = allBirth;
@@ -47,7 +50,10 @@ export function BirthCertificates({ currentUser, onAddToPrintQueue }: BirthCerti
     //   birth.id === id ? { ...birth, status } : birth
     // ));
   };
-
+  const handleShowModale = (birth: BirthCerticat) => {
+    setBirthCertifcat(birth);
+    setShowModal(true);
+  }
   const handleAddToPrintQueue = async (birth: BirthCerticat) => {
     if (onAddToPrintQueue) {
       onAddToPrintQueue({
@@ -135,7 +141,7 @@ export function BirthCertificates({ currentUser, onAddToPrintQueue }: BirthCerti
               </TableRow>
             ) : (
               filteredBirths.map((birth) => (
-                <TableRow key={birth.id}>
+                <TableRow key={birth.id} onClick={() => handleShowModale(birth)}>
                   <TableCell>{birth.name}</TableCell>
                   <TableCell>
                     <div className="text-sm">
@@ -185,7 +191,8 @@ export function BirthCertificates({ currentUser, onAddToPrintQueue }: BirthCerti
           </TableBody>
         </Table>
       </div>
-      <AddBirth dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}/>
+      <AddBirth dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
+      {showModal && <BirthCertifcatModal birth={birthCertifcat} onClose={() => setShowModal(false)} />}
     </div>
   );
 }

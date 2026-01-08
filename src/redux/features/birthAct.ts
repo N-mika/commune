@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BirthCerticat } from "../../data/typeData";
 
 interface BirthActState {
@@ -16,10 +16,11 @@ const initialState: BirthActState = {
     motherName: 'RASOAMIARAMANANA Marie',
     fokontany: 'Ambohimanarina',
     dateOfBirth: '2024-03-15',
-    registrationNumber: 'AC-2024-0315-001',
+    registrationNumber: '001',
     requestDate: '2024-12-10',
     status: 'EN_ATTENTE',
     createdAt: '2024-12-10T08:30:00Z',
+    genre : 'F',
   },
   {
     id: '2',
@@ -28,10 +29,11 @@ const initialState: BirthActState = {
     motherName: 'RAVELO Sophie',
     fokontany: 'Antsahavola',
     dateOfBirth: '2024-05-20',
-    registrationNumber: 'AC-2024-0520-002',
+    registrationNumber: '002',
     requestDate: '2024-12-12',
     status: 'APPROUVE',
     createdAt: '2024-12-12T10:15:00Z',
+    genre : 'M',
   },
   {
     id: '3',
@@ -40,10 +42,11 @@ const initialState: BirthActState = {
     motherName: 'RABARY Nicole',
     fokontany: 'Mahamasina',
     dateOfBirth: '2024-08-05',
-    registrationNumber: 'AC-2024-0805-003',
+    registrationNumber: '003',
     requestDate: '2024-12-15',
     status: 'EN_ATTENTE',
     createdAt: '2024-12-15T14:20:00Z',
+    genre : 'M',
   },
 ],
   loading: false,

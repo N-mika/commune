@@ -10,9 +10,12 @@ import { AuditHistory } from './components/AuditHistory';
 import Sidebar from './components/SideBar';
 import Header from './components/Header';
 import { User } from '../data/typeData';
+import {useSelector} from 'react-redux';
+import { RootState } from '../redux';
 
 const App = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>({ name: 'Admin User', role: 'admin', email: 'michaelnadrasana@gmail.com', id: 1 });
+  const user = useSelector((state :RootState)=> state.user.currentUser)
+  const [currentUser, setCurrentUser] = useState<User | null>(user);
   const [currentPage, setCurrentPage] = useState<string>('dashboard');
   const [printQueue, setPrintQueue] = useState<any[]>([]);
 

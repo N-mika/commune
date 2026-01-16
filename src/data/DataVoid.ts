@@ -11,4 +11,5 @@ export const newBirthVoid : BirthCerticat = {
   motherName: "",
   fokontany: "",
   dateOfBirth: "",
+  genre: "M",
 }

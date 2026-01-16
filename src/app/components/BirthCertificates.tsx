@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Search, CheckCircle, XCircle, Printer, Plus } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -11,6 +11,10 @@ import { newBirthVoid } from '../../data/DataVoid';
 import { useSelector } from "react-redux";
 import { RootState } from '../../redux';
 import BirthCertifcatModal from './Modal/BirthCertifcatModal';
+import ActItem from './ui/Tools/ActItem';
+import { generateMultipleActsPDF } from '../../tools/function';
+
+
 interface BirthCertificatesProps {
   currentUser: User;
   onAddToPrintQueue?: (item: any) => void;
@@ -18,13 +22,15 @@ interface BirthCertificatesProps {
 
 export function BirthCertificates({ currentUser, onAddToPrintQueue }: BirthCertificatesProps) {
   const allBirth = useSelector((state: RootState) => state.birthAct.births);
-  const [filteredBirths, setFilteredBirths] = useState<BirthCerticat[]>([]);
+  const [filteredActs, setFilteredBirths] = useState<BirthCerticat[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [birthCertifcat, setBirthCertifcat] = useState<BirthCerticat>(newBirthVoid);
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let filtered = allBirth;
@@ -133,14 +139,14 @@ export function BirthCertificates({ currentUser, onAddToPrintQueue }: BirthCerti
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredBirths.length === 0 ? (
+            {filteredActs.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center text-gray-500">
                   Aucun résultat trouvé
                 </TableCell>
               </TableRow>
             ) : (
-              filteredBirths.map((birth) => (
+              filteredActs.map((birth) => (
                 <TableRow key={birth.id} onClick={() => handleShowModale(birth)}>
                   <TableCell>{birth.name}</TableCell>
                   <TableCell>
@@ -193,6 +199,27 @@ export function BirthCertificates({ currentUser, onAddToPrintQueue }: BirthCerti
       </div>
       <AddBirth dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
       {showModal && <BirthCertifcatModal birth={birthCertifcat} onClose={() => setShowModal(false)} />}
+      <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
+        {filteredActs.length > 0 && (
+          <ActItem birth={filteredActs[currentIndex]} pdfRef={pdfRef} />
+        )}
+      </div>
+
+      <button
+        onClick={async () => {
+          if (!pdfRef.current) return;
+          await generateMultipleActsPDF(
+            filteredActs,
+            setCurrentIndex,
+            pdfRef.current
+          );
+        }}
+        className="bg-green-600 text-white px-4 py-2 rounded"
+      >
+        📄 Exporter tous les actes
+      </button>
+
+
     </div>
   );
 }
